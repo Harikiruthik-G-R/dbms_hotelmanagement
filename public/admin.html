@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management System - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+        .dashboard-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        h1, h2, h3 {
+            color: #0d6efd;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .search-container {
+            margin-bottom: 30px;
+        }
+        .data-container {
+            display: none;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .btn-update {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="dashboard-container">
+                    <h1 class="text-center mb-4">Hotel Management Admin Dashboard</h1>
+                    
+                    <!-- Search Section -->
+                    <div class="search-container">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Search User by Email</h3>
+                                <div class="input-group mb-3">
+                                    <input type="email" class="form-control" id="searchEmail" placeholder="Enter user email">
+                                    <button class="btn btn-primary" type="button" id="searchBtn">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-body">
+                          <h3 class="card-title">Search by Check-in Date Range</h3>
+                          <div class="row">
+                            <div class="col-md-5">
+                              <label for="fromDate" class="form-label">From</label>
+                              <input type="date" class="form-control" id="fromDate">
+                            </div>
+                            <div class="col-md-5">
+                              <label for="toDate" class="form-label">To</label>
+                              <input type="date" class="form-control" id="toDate">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                              <button class="btn btn-secondary w-100" id="rangeSearchBtn">Search</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    
+                    <!-- Data Display Section -->
+                    <div id="dataContainer" class="data-container">
+                        <!-- User Information -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="mb-0">User Information</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row" id="userInfo">
+                                    <!-- User data will be displayed here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Guest Information -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="mb-0">Guest Information</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row" id="guestInfo">
+                                    <!-- Guest data will be displayed here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Booking Information -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="mb-0">Booking Information</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="bookingInfo">
+                                    <!-- Booking data will be displayed here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Room Information -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="mb-0">Room Information</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="roomInfo">
+                                    <!-- Room data will be displayed here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Payment Information -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="mb-0">Payment Information</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="paymentInfo">
+                                    <!-- Payment data will be displayed here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Services Information -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="mb-0">Services Information</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="servicesInfo">
+                                    <!-- Services data will be displayed here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Update Booking Form -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h3 class="mb-0">Update Booking</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="updateBookingForm">
+                                    <input type="hidden" id="updateBookingId">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="updateCheckIn" class="form-label">Check-in Date</label>
+                                            <input type="date" class="form-control" id="updateCheckIn" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="updateCheckOut" class="form-label">Check-out Date</label>
+                                            <input type="date" class="form-control" id="updateCheckOut" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="updateStatus" class="form-label">Booking Status</label>
+                                            <select class="form-select" id="updateStatus" required>
+                                                <option value="Confirmed">Confirmed</option>
+                                                <option value="Cancelled">Cancelled</option>
+                                                <option value="Completed">Completed</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Update Booking</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- No Results Message -->
+                    <div id="noResults" class="alert alert-warning" style="display: none;">
+                        No results found for this email address.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchBtn = document.getElementById('searchBtn');
+            const searchEmail = document.getElementById('searchEmail');
+            const dataContainer = document.getElementById('dataContainer');
+            const noResults = document.getElementById('noResults');
+            const updateBookingForm = document.getElementById('updateBookingForm');
+            
+            // Search button click handler
+            searchBtn.addEventListener('click', function() {
+                const email = searchEmail.value.trim();
+                if (!email) {
+                    alert('Please enter an email address');
+                    return;
+                }
+                
+                fetch(`/api/search?email=${encodeURIComponent(email)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.length === 0) {
+                            dataContainer.style.display = 'none';
+                            noResults.style.display = 'block';
+                            return;
+                        }
+                        
+                        // Display data
+                        dataContainer.style.display = 'block';
+                        noResults.style.display = 'none';
+                        
+                        // Process and display the data
+                        displayUserInfo(data[0]);
+                        displayGuestInfo(data[0]);
+                        displayBookingInfo(data);
+                        displayRoomInfo(data[0]);
+                        displayPaymentInfo(data);
+                        displayServicesInfo(data);
+                    })
+                    .catch(error => {
+                        console.error('Error searching by email:', error);
+                        alert('Error searching by email: ' + error.message);
+                    });
+            });
+            
+            // Update booking form submission
+            updateBookingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const bookingId = document.getElementById('updateBookingId').value;
+                const checkIn = document.getElementById('updateCheckIn').value;
+                const checkOut = document.getElementById('updateCheckOut').value;
+                const status = document.getElementById('updateStatus').value;
+                
+                // Get the guest_id and room_id from the displayed data
+                const guestId = document.getElementById('updateBookingForm').dataset.guestId;
+                const roomId = document.getElementById('updateBookingForm').dataset.roomId;
+                
+                fetch(`/api/bookings/${bookingId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        guest_id: guestId,
+                        room_id: roomId,
+                        check_in: checkIn,
+                        check_out: checkOut,
+                        status: status
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to update booking');
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Booking updated successfully!');
+                    // Refresh the search to show updated data
+                    searchBtn.click();
+                })
+                .catch(error => {
+                    console.error('Error updating booking:', error);
+                    alert('Error updating booking: ' + error.message);
+                });
+            });
+            
+            // Helper functions to display data
+            function displayUserInfo(userData) {
+                const userInfo = document.getElementById('userInfo');
+                userInfo.innerHTML = `
+                    <div class="col-md-6">
+                        <p><strong>Username:</strong> ${userData.username || 'N/A'}</p>
+                        <p><strong>Email:</strong> ${userData.email || 'N/A'}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Phone:</strong> ${userData.phone || 'N/A'}</p>
+                        <p><strong>User ID:</strong> ${userData.user_id || 'N/A'}</p>
+                    </div>
+                `;
+            }
+            
+            function displayGuestInfo(guestData) {
+                const guestInfo = document.getElementById('guestInfo');
+                guestInfo.innerHTML = `
+                    <div class="col-md-6">
+                        <p><strong>Full Name:</strong> ${guestData.full_name || 'N/A'}</p>
+                        <p><strong>Email:</strong> ${guestData.email || 'N/A'}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Phone:</strong> ${guestData.phone || 'N/A'}</p>
+                        <p><strong>Address:</strong> ${guestData.address || 'N/A'}</p>
+                    </div>
+                `;
+            }
+            
+            function displayBookingInfo(bookingsData) {
+                const bookingInfo = document.getElementById('bookingInfo');
+                
+                // Filter unique bookings
+                const bookingIds = new Set();
+                const uniqueBookings = bookingsData.filter(booking => {
+                    if (booking.booking_id && !bookingIds.has(booking.booking_id)) {
+                        bookingIds.add(booking.booking_id);
+                        return true;
+                    }
+                    return false;
+                });
+                
+                if (uniqueBookings.length === 0) {
+                    bookingInfo.innerHTML = '<p>No booking information available.</p>';
+                    return;
+                }
+                
+                let bookingsHtml = '<div class="table-responsive"><table class="table table-striped"><thead><tr>' +
+                    '<th>Booking ID</th><th>Check-in</th><th>Check-out</th><th>Status</th><th>Action</th>' +
+                    '</tr></thead><tbody>';
+                
+                uniqueBookings.forEach(booking => {
+                    const checkIn = booking.check_in ? new Date(booking.check_in).toLocaleDateString() : 'N/A';
+                    const checkOut = booking.check_out ? new Date(booking.check_out).toLocaleDateString() : 'N/A';
+                    
+                    bookingsHtml += `<tr>
+                        <td>${booking.booking_id || 'N/A'}</td>
+                        <td>${checkIn}</td>
+                        <td>${checkOut}</td>
+                        <td>${booking.status || 'N/A'}</td>
+                        <td><button class="btn btn-sm btn-primary edit-booking" data-booking-id="${booking.booking_id}" 
+                            data-check-in="${booking.check_in}" data-check-out="${booking.check_out}" 
+                            data-status="${booking.status}" data-guest-id="${booking.guest_id}" 
+                            data-room-id="${booking.room_id}">Edit</button></td>
+                    </tr>`;
+                });
+                
+                bookingsHtml += '</tbody></table></div>';
+                bookingInfo.innerHTML = bookingsHtml;
+                
+                // Add event listeners to edit buttons
+                document.querySelectorAll('.edit-booking').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const bookingId = this.dataset.bookingId;
+                        const checkIn = this.dataset.checkIn;
+                        const checkOut = this.dataset.checkOut;
+                        const status = this.dataset.status;
+                        const guestId = this.dataset.guestId;
+                        const roomId = this.dataset.roomId;
+                        
+                        document.getElementById('updateBookingId').value = bookingId;
+                        document.getElementById('updateCheckIn').value = checkIn;
+                        document.getElementById('updateCheckOut').value = checkOut;
+                        document.getElementById('updateStatus').value = status;
+                        
+                        // Store guest_id and room_id as data attributes
+                        document.getElementById('updateBookingForm').dataset.guestId = guestId;
+                        document.getElementById('updateBookingForm').dataset.roomId = roomId;
+                        
+                        // Scroll to the update form
+                        document.getElementById('updateBookingForm').scrollIntoView({ behavior: 'smooth' });
+                    });
+                });
+            }
+            
+            function displayRoomInfo(roomData) {
+                const roomInfo = document.getElementById('roomInfo');
+                
+                if (!roomData.room_id) {
+                    roomInfo.innerHTML = '<p>No room information available.</p>';
+                    return;
+                }
+                
+                roomInfo.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Room ID:</strong> ${roomData.room_id || 'N/A'}</p>
+                            <p><strong>Room Number:</strong> ${roomData.room_number || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Room Type:</strong> ${roomData.type_name || 'N/A'}</p>
+                            <p><strong>Price Per Night:</strong> $${roomData.price_per_night || 'N/A'}</p>
+                            <p><strong>Status:</strong> ${roomData.status || 'N/A'}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            function displayPaymentInfo(paymentsData) {
+                const paymentInfo = document.getElementById('paymentInfo');
+                
+                // Filter unique payments
+                const paymentIds = new Set();
+                const uniquePayments = paymentsData.filter(payment => {
+                    if (payment.payment_id && !paymentIds.has(payment.payment_id)) {
+                        paymentIds.add(payment.payment_id);
+                        return true;
+                    }
+                    return false;
+                });
+                
+                if (uniquePayments.length === 0) {
+                    paymentInfo.innerHTML = '<p>No payment information available.</p>';
+                    return;
+                }
+                
+                let paymentsHtml = '<div class="table-responsive"><table class="table table-striped"><thead><tr>' +
+                    '<th>Payment ID</th><th>Amount</th><th>Payment Date</th><th>Payment Method</th><th>Booking ID</th>' +
+                    '</tr></thead><tbody>';
+                
+                uniquePayments.forEach(payment => {
+                    const paymentDate = payment.payment_date ? new Date(payment.payment_date).toLocaleDateString() : 'N/A';
+                    
+                    paymentsHtml += `<tr>
+                        <td>${payment.payment_id || 'N/A'}</td>
+                        <td>$${payment.amount || 'N/A'}</td>
+                        <td>${paymentDate}</td>
+                        <td>${payment.payment_method || 'N/A'}</td>
+                        <td>${payment.booking_id || 'N/A'}</td>
+                    </tr>`;
+                });
+                
+                paymentsHtml += '</tbody></table></div>';
+                paymentInfo.innerHTML = paymentsHtml;
+            }
+            
+            function displayServicesInfo(servicesData) {
+                const servicesInfo = document.getElementById('servicesInfo');
+                
+                // Filter unique services
+                const serviceIds = new Set();
+                const uniqueServices = servicesData.filter(service => {
+                    if (service.service_id && service.booking_id && !serviceIds.has(service.service_id + '-' + service.booking_id)) {
+                        serviceIds.add(service.service_id + '-' + service.booking_id);
+                        return true;
+                    }
+                    return false;
+                });
+                
+                if (uniqueServices.length === 0) {
+                    servicesInfo.innerHTML = '<p>No services information available.</p>';
+                    return;
+                }
+                
+                let servicesHtml = '<div class="table-responsive"><table class="table table-striped"><thead><tr>' +
+                    '<th>Service Name</th><th>Price</th><th>Quantity</th><th>Total</th><th>Booking ID</th>' +
+                    '</tr></thead><tbody>';
+                
+                uniqueServices.forEach(service => {
+                    const total = (service.price || 0) * (service.quantity || 0);
+                    
+                    servicesHtml += `<tr>
+                        <td>${service.service_name || 'N/A'}</td>
+                        <td>$${service.price || 'N/A'}</td>
+                        <td>${service.quantity || 'N/A'}</td>
+                        <td>$${total.toFixed(2)}</td>
+                        <td>${service.booking_id || 'N/A'}</td>
+                    </tr>`;
+                });
+                
+                servicesHtml += '</tbody></table></div>';
+                servicesInfo.innerHTML = servicesHtml;
+            }
+        });
+        //////////////////////
+        const rangeSearchBtn = document.getElementById('rangeSearchBtn');
+
+rangeSearchBtn.addEventListener('click', () => {
+  const from = document.getElementById('fromDate').value;
+  const to = document.getElementById('toDate').value;
+
+  if (!from || !to) {
+    alert('Please select both from and to dates.');
+    return;
+  }
+
+  fetch(`/api/bookings/checkin-range?from=${from}&to=${to}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.length === 0) {
+        alert('No bookings found in this date range.');
+        return;
+      }
+
+      let resultHtml = '<h5 class="mt-3">Results:</h5>';
+      resultHtml += '<table class="table table-bordered"><thead><tr>' +
+                    '<th>Guest Name</th><th>Email</th><th>Phone</th>' +
+                    '<th>Check-in</th><th>Check-out</th><th>Status</th>' +
+                    '</tr></thead><tbody>';
+
+      data.forEach(row => {
+        resultHtml += `<tr>
+          <td>${row.full_name}</td>
+          <td>${row.email || ''}</td>
+          <td>${row.phone}</td>
+          <td>${row.check_in}</td>
+          <td>${row.check_out}</td>
+          <td>${row.status}</td>
+        </tr>`;
+      });
+
+      resultHtml += '</tbody></table>';
+
+      const bookingInfo = document.getElementById('bookingInfo');
+      bookingInfo.innerHTML = resultHtml;
+      document.getElementById('dataContainer').style.display = 'block';
+    })
+    .catch(err => {
+      console.error('Error fetching range data:', err);
+      alert('Failed to fetch bookings by date range.');
+    });
+});
+
+    </script>
+</body>
+</html>
