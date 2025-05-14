@@ -6,38 +6,178 @@
     <title>Hotel Management System - Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-            padding-top: 20px;
+        @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Roboto:wght@300;400;500;900&display=swap");
+
+        :root {
+            --font-principal: "Roboto", sans-serif;
+            --gradient-bg: linear-gradient(30deg, rgba(0, 0, 0, .95) 50%, rgba(0, 0, 0, .9) 50.1%);
+            --color-primary: #ffeba7;
+            --color-light: #fff;
+            --color-dark: #000;
+            --color-card-bg: rgba(15, 15, 15, 0.8);
+            --color-card-header: rgba(20, 20, 20, 0.9);
         }
+
+        body {
+            background: var(--gradient-bg);
+            color: var(--color-light);
+            font-family: var(--font-principal);
+            min-height: 100vh;
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+
         .dashboard-container {
-            background-color: white;
+            background-color: var(--color-card-bg);
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
             padding: 30px;
             margin-bottom: 30px;
+            border: 1px solid rgba(255, 235, 167, 0.1);
         }
+
         h1, h2, h3 {
-            color: #0d6efd;
+            color: var(--color-primary);
+            font-weight: 500;
         }
+
         .section {
             margin-bottom: 25px;
             padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .search-container {
             margin-bottom: 30px;
         }
+
         .data-container {
             display: none;
         }
+
         .card {
             margin-bottom: 20px;
+            background-color: var(--color-card-bg);
+            border: 1px solid rgba(255, 235, 167, 0.1);
+            color: var(--color-light);
         }
-        .btn-update {
-            margin-top: 10px;
+
+        .card-header {
+            background-color: var(--color-card-header);
+            border-bottom: 1px solid rgba(255, 235, 167, 0.2);
         }
-    </style>
+
+        .card-header.bg-primary {
+            background: linear-gradient(30deg, rgba(10, 10, 10, 0.95) 50%, rgba(15, 15, 15, 0.9) 50.1%) !important;
+            border-left: 3px solid var(--color-primary);
+        }
+
+        .card-body {
+            background-color: rgba(10, 10, 10, 0.5);
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: var(--color-dark);
+            border: none;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: #e8d694;
+            color: var(--color-dark);
+            box-shadow: 0 0 15px rgba(255, 235, 167, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: #444;
+            border: none;
+        }
+
+        .btn-secondary:hover, .btn-secondary:focus {
+            background-color: #555;
+            box-shadow: 0 0 15px rgba(80, 80, 80, 0.4);
+        }
+
+        .btn-success {
+            background-color: #3c7744;
+            border: none;
+        }
+
+        .btn-success:hover, .btn-success:focus {
+            background-color: #45894f;
+            box-shadow: 0 0 15px rgba(60, 119, 68, 0.4);
+        }
+
+        .card-header.bg-success {
+            background: linear-gradient(30deg, rgba(40, 80, 45, 0.95) 50%, rgba(45, 85, 50, 0.9) 50.1%) !important;
+            border-left: 3px solid var(--color-primary);
+        }
+
+        .form-control, .form-select {
+            background-color: rgba(30, 30, 30, 0.7);
+            border: 1px solid rgba(255, 235, 167, 0.2);
+            color: var(--color-light);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: rgba(40, 40, 40, 0.7);
+            border: 1px solid var(--color-primary);
+            color: var(--color-light);
+            box-shadow: 0 0 0 0.25rem rgba(255, 235, 167, 0.25);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-control:disabled, .form-select:disabled {
+            background-color: rgba(20, 20, 20, 0.5);
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .table {
+            color: white;
+            border-color: rgba(255, 235, 167, 0.1);
+        }
+
+        .table-striped > tbody > tr:nth-of-type(2n+1) > * {
+            --bs-table-accent-bg: var(--bs-table-striped-bg);
+            color: #fff;
+        }
+
+        .alert-warning {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border-color: rgba(255, 193, 7, 0.3);
+        }
+
+        /* Improve table readability */
+        .table th {
+            color: var(--color-primary);
+            font-weight: 500;
+            border-bottom: 2px solid rgba(255, 235, 167, 0.2);
+        }
+
+        .table td {
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .edit-booking {
+            background-color: rgba(255, 235, 167, 0.2);
+            color: var(--color-primary);
+            border: 1px solid rgba(255, 235, 167, 0.3);
+        }
+
+        .edit-booking:hover {
+            background-color: var(--color-primary);
+            color: var(--color-dark);
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+        </style
 </head>
 <body>
     <div class="container">

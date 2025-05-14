@@ -36,6 +36,10 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
+app.get('/form', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'form.html'));
+});
+
 // Users API
 app.post('/api/users', (req, res) => {
   const { username, email, phone, password } = req.body;

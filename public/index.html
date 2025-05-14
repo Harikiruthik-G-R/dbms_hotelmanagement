@@ -4,565 +4,554 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Management System - Booking Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.4.1/swiper-bundle.min.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
     <style>
+        @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Roboto:wght@300;400;500;900&display=swap");
+
+        :root {
+          --font-principal: "Roboto";
+          --gradient-bg: linear-gradient(30deg, rgba(0, 0, 0, .95) 50%, rgba(0, 0, 0, .9) 50.1%);
+          --color-primary: #ffeba7;
+          --color-light: #fff;
+          --color-dark: #000;
+          --color-dark-transparent: rgba(0, 0, 0, 0.8);
+        }
+
+        html,
         body {
-            background-color: #f8f9fa;
-            padding-top: 20px;
+          position: relative;
+          min-height: 100vh;
+          margin: 0;
+          padding: 0;
         }
-        .form-container {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            padding: 30px;
-            margin-bottom: 30px;
+
+        body {
+          display: flex;
+          flex-direction: column;
+          background: var(--gradient-bg);
+          color: var(--color-light);
+          font-family: var(--font-principal);
         }
-        h1, h2, h3 {
-            color: #0d6efd;
+        
+        /* Navbar Styles */
+        .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background-color: var(--color-dark-transparent);
+          padding: 15px 50px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 1000;
         }
-        .section {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+        
+        .logo {
+          display: flex;
+          align-items: center;
         }
-        .btn-primary {
-            margin-top: 20px;
+        
+        .logo a {
+          color: var(--color-primary);
+          text-decoration: none;
+          font-size: 24px;
+          font-weight: 600;
+          letter-spacing: 1px;
         }
-        #statusMessage {
+        
+        .logo i {
+          margin-right: 10px;
+          font-size: 28px;
+        }
+        
+        .nav-links {
+          display: flex;
+          list-style: none;
+        }
+        
+        .nav-links li {
+          margin: 0 20px;
+        }
+        
+        .nav-links a {
+          color: var(--color-light);
+          text-decoration: none;
+          font-size: 16px;
+          font-weight: 500;
+          letter-spacing: 0.5px;
+          padding: 8px 0;
+          position: relative;
+          transition: all 0.3s ease;
+        }
+        
+        .nav-links a::after {
+          content: '';
+          position: absolute;
+          width: 0;
+          height: 2px;
+          background-color: var(--color-primary);
+          bottom: 0;
+          left: 0;
+          transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+          color: var(--color-primary);
+        }
+        
+        .nav-links a:hover::after {
+          width: 100%;
+        }
+        
+        .book-now {
+          background-color: var(--color-primary);
+          color: var(--color-dark);
+          padding: 10px 20px;
+          border-radius: 5px;
+          font-weight: 600;
+          text-decoration: none;
+          transition: all 0.3s ease;
+        }
+        
+        .book-now:hover {
+          background-color: #f0d687;
+          transform: translateY(-2px);
+        }
+        
+        /* Main Content Wrapper */
+        .main-content {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 80px 0;
+        }
+
+        .swiper {
+          width: 100%;
+          height: 600px;
+          margin-right: 0;
+          align-items: center;
+        }
+
+        .swiper-wrapper {
+          display: flex;
+          align-items: center;
+          counter-reset: list-slider;
+        }
+
+        .swiper-slide {
+          position: relative;
+          height: 90%;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          counter-increment: list-slider;
+          font-size: 18px;
+          opacity: 1;
+          transition: opacity 600ms ease;
+        }
+
+        .swiper-slide::before {
+          content: "0" counter(list-slider);
+          display: block;
+          position: absolute;
+          width: 100px;
+          left: 0;
+          top: 0;
+          font-size: 120px;
+          font-weight: 600;
+          line-height: .8;
+          font-family: var(--font-principal);
+          color: var(--color-primary);
+          transform: scale(0.5);
+          opacity: 0;
+          z-index: -1;
+          pointer-events: none;
+          transition: all 350ms ease;
+        }
+
+        .swiper-slide-active::before {
+          opacity: .4;
+          transform: scale(1);
+        }
+
+        .swiper-slide-active .c-swiper__text {
+          opacity: 1;
+        }
+
+        .swiper-slide-active .c-swiper__text .c-swiper__title,
+        .swiper-slide-active .c-swiper__text .c-swiper__link {
+          transform: translateY(0);
+        }
+
+        .swiper-slide-prev {
+          opacity: 0;
+        }
+
+        .swiper-slide-next {
+          opacity: .5;
+        }
+
+        .c-swiper__text {
+          opacity: 0;
+          width: 300px;
+          height: 250px;
+          position: absolute;
+          top: 25%;
+          left: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          transition: opacity 350ms ease;
+        }
+
+        .c-swiper__text .c-swiper__title {
+          max-height: 100%;
+          font-size: 64px;
+          font-weight: 600;
+          text-shadow: 1px 1px 2px var(--color-dark);
+          text-align: left;
+          pointer-events: none;
+          transition: transform 500ms ease;
+          transition-delay: 100ms;
+          transform: translateY(-25%);
+          z-index: 1;
+        }
+
+        .c-swiper__text .c-swiper__link {
+          position: relative;
+          max-width: 100px;
+          margin-left: 24px;
+          color: var(--color-light);
+          text-decoration: none;
+          transform: translateY(25%);
+          transition: transform 500ms ease;
+          transition-delay: 200ms;
+        }
+
+        .c-swiper__text .c-swiper__link::after {
+          content: '';
+          height: 2px;
+          position: absolute;
+          bottom: -5px;
+          left: 0;
+          width: 100%;
+          background-color: var(--color-light);
+        }
+
+        .c-swiper__image-container {
+          width: 90%;
+          height: 80%;
+          overflow: hidden;
+        }
+
+        .c-swiper__image-container img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .swiper-pagination-bullet {
+          width: 36px;
+          height: 3px;
+          background-color: var(--color-primary);
+          border-radius: 0;
+        }
+        
+        /* Footer Styles */
+        .footer {
+          background-color: var(--color-dark-transparent);
+          padding: 60px 0 30px;
+          position: relative;
+        }
+        
+        .footer-content {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px;
+        }
+        
+        .footer-column {
+          flex: 1;
+          min-width: 200px;
+          margin-bottom: 30px;
+          padding: 0 15px;
+        }
+        
+        .footer-column h3 {
+          color: var(--color-primary);
+          font-size: 18px;
+          margin-bottom: 20px;
+          position: relative;
+          padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 50px;
+          height: 2px;
+          background-color: var(--color-primary);
+        }
+        
+        .footer-column p {
+          color: var(--color-light);
+          margin-bottom: 15px;
+          font-size: 14px;
+          line-height: 1.6;
+        }
+        
+        .footer-links {
+          list-style: none;
+          padding: 0;
+        }
+        
+        .footer-links li {
+          margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+          color: var(--color-light);
+          text-decoration: none;
+          font-size: 14px;
+          transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+          color: var(--color-primary);
+          padding-left: 5px;
+        }
+        
+        .social-icons {
+          display: flex;
+          margin-top: 20px;
+        }
+        
+        .social-icons a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 36px;
+          height: 36px;
+          background-color: rgba(255, 255, 255, 0.1);
+          border-radius: 50%;
+          margin-right: 10px;
+          color: var(--color-light);
+          transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+          background-color: var(--color-primary);
+          color: var(--color-dark);
+          transform: translateY(-3px);
+        }
+        
+        .contact-info {
+          display: flex;
+          align-items: center;
+          margin-bottom: 15px;
+        }
+        
+        .contact-info i {
+          margin-right: 10px;
+          color: var(--color-primary);
+        }
+        
+        .footer-bottom {
+          text-align: center;
+          padding-top: 30px;
+          margin-top: 40px;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-bottom p {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+          .nav-links {
             display: none;
-            margin-top: 15px;
+          }
+          
+          .navbar {
+            padding: 15px 20px;
+          }
+          
+          .footer-column {
+            flex: 0 0 50%;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .footer-column {
+            flex: 0 0 100%;
+          }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="form-container">
-                    <h1 class="text-center mb-4">Hotel Booking Form</h1>
-                    
-                    <!-- Status message box -->
-                    <div id="statusMessage" class="alert" role="alert"></div>
-                    
-                    <form id="bookingForm">
-                        <!-- User Information Section -->
-                        <div class="section">
-                            <h3>User Information</h3>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="username" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="username" name="username" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="phone" class="form-label">Phone</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Guest Information Section -->
-                        <div class="section">
-                            <h3>Guest Information</h3>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="fullName" class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" id="fullName" name="fullName" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="guestPhone" class="form-label">Guest Phone</label>
-                                    <input type="tel" class="form-control" id="guestPhone" name="guestPhone" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="guestEmail" class="form-label">Guest Email</label>
-                                    <input type="email" class="form-control" id="guestEmail" name="guestEmail">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="address" class="form-label">Address</label>
-                                    <textarea class="form-control" id="address" name="address" rows="2"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Room Booking Section -->
-                        <div class="section">
-                            <h3>Room Booking</h3>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="roomType" class="form-label">Room Type</label>
-                                    <select class="form-select" id="roomType" name="roomType" required>
-                                        <option value="" selected disabled>Select Room Type</option>
-                                        <!-- Room types will be loaded dynamically -->
-                                    </select>
-                                    <small class="form-text text-muted">Select a room type to see available rooms</small>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="roomNumber" class="form-label">Room Number</label>
-                                    <select class="form-select" id="roomNumber" name="roomNumber" required>
-                                        <option value="" selected disabled>Select Room Number</option>
-                                        <!-- Room numbers will be loaded dynamically -->
-                                    </select>
-                                    <small class="form-text text-muted">Shows only available rooms of selected type</small>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="checkIn" class="form-label">Check-in Date</label>
-                                    <input type="date" class="form-control" id="checkIn" name="checkIn" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="checkOut" class="form-label">Check-out Date</label>
-                                    <input type="date" class="form-control" id="checkOut" name="checkOut" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="bookingStatus" class="form-label">Booking Status</label>
-                                    <select class="form-select" id="bookingStatus" name="bookingStatus" required>
-                                        <option value="Confirmed">Confirmed</option>
-                                        <option value="Cancelled">Cancelled</option>
-                                        <option value="Completed">Completed</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Payment Information Section -->
-                        <div class="section">
-                            <h3>Payment Information</h3>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="amount" class="form-label">Amount</label>
-                                    <input type="number" step="0.01" class="form-control" id="amount" name="amount" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="paymentDate" class="form-label">Payment Date</label>
-                                    <input type="date" class="form-control" id="paymentDate" name="paymentDate" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="paymentMethod" class="form-label">Payment Method</label>
-                                    <select class="form-select" id="paymentMethod" name="paymentMethod" required>
-                                        <option value="Credit Card">Credit Card</option>
-                                        <option value="Debit Card">Debit Card</option>
-                                        <option value="Cash">Cash</option>
-                                        <option value="Bank Transfer">Bank Transfer</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Services Section -->
-                        <div class="section">
-                            <h3>Additional Services</h3>
-                            <div id="servicesContainer">
-                                <!-- Services will be loaded dynamically -->
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary w-100">Submit Booking</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <a href="#"><i class="fas fa-hotel"></i>Luxury Hotels</a>
     </div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Hotels</a></li>
+      <li><a href="#">Destinations</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <a href="#" class="book-now" onclick="window.location.href='/form'">Book Now</a>
+  </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Function to show status message
-            function showStatusMessage(message, isError = false) {
-                const statusDiv = document.getElementById('statusMessage');
-                statusDiv.textContent = message;
-                statusDiv.className = isError ? 'alert alert-danger' : 'alert alert-success';
-                statusDiv.style.display = 'block';
-                
-                // Scroll to message
-                statusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                // Hide after 5 seconds if success
-                if (!isError) {
-                    setTimeout(() => {
-                        statusDiv.style.display = 'none';
-                    }, 5000);
-                }
-            }
-            
-            // Fetch room types for dropdown
-            fetch('/api/roomtypes')
-                .then(response => response.json())
-                .then(data => {
-                    const roomTypeSelect = document.getElementById('roomType');
-                    data.forEach(type => {
-                        const option = document.createElement('option');
-                        option.value = type.type_id;
-                        
-                        // Create a more descriptive display with bed type and amenities
-                        let description = type.type_name;
-                        
-                        // Add bed type information if available
-                        if (type.description) {
-                            description += ` (${type.description})`;
-                        }
-                        
-                        option.textContent = `${description} - $${type.price_per_night} per night`;
-                        roomTypeSelect.appendChild(option);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching room types:', error);
-                    showStatusMessage('Error loading room types. Please refresh the page.', true);
-                });
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <div class="swiper" id="js-swiper-hotels">
+      <div class="swiper-wrapper">
+        <!-- ITEM 1 -->
+        <div class="swiper-slide">
+          <div class="c-swiper__text">
+            <div class="c-swiper__title">Hotel Spa</div>
+          
+            <a href="#" class="c-swiper__link" onclick="window.location.href='/form'">View Details</a>
+          </div>
+          
+          <div class="c-swiper__image-container">
+            <img src="https://images.pexels.com/photos/2373201/pexels-photo-2373201.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Hotel Spa">
+          </div>
+        </div>
+        
+        <!-- ITEM 2 -->
+        <div class="swiper-slide">
+          <div class="c-swiper__text">
+            <div class="c-swiper__title">Hotel Urban</div>
+          
+            <a href="#" class="c-swiper__link" onclick="window.location.href='/form'">View Details</a>
+          </div>
+          
+          <div class="c-swiper__image-container">
+            <img src="https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Hotel Urban">
+          </div>
+        </div>
+        
+        <!-- ITEM 3 -->
+        <div class="swiper-slide">
+          <div class="c-swiper__text">
+            <div class="c-swiper__title">Hotel Adults</div>
+          
+            <a href="#" class="c-swiper__link" onclick="window.location.href='/form'">View Details</a>
+          </div>
+          
+          <div class="c-swiper__image-container">
+            <img src="https://images.pexels.com/photos/6474917/pexels-photo-6474917.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Hotel Adults">
+          </div>
+        </div>
+        
+        <!-- ITEM 4 -->
+        <div class="swiper-slide">
+          <div class="c-swiper__text">
+            <div class="c-swiper__title">Hotel Beach</div>
+          
+            <a href="#" class="c-swiper__link" onclick="window.location.href='/form'">View Details</a>
+          </div>
+          
+          <div class="c-swiper__image-container">
+            <img src="https://images.pexels.com/photos/1591361/pexels-photo-1591361.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Hotel Beach">
+          </div>
+        </div>
+      </div>
+    
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3>About Us</h3>
+        <p>Luxury Hotels offers premiere accommodations in the most sought-after destinations around the world. Experience unparalleled service, exquisite dining, and luxurious amenities.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+      
+      <div class="footer-column">
+        <h3>Useful Links</h3>
+        <ul class="footer-links">
+          <li><a href="#">Our Hotels</a></li>
+          <li><a href="#">Special Offers</a></li>
+          <li><a href="#">Rewards Program</a></li>
+          <li><a href="#">Gift Cards</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3>Privacy & Terms</h3>
+        <ul class="footer-links">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">Reservation Policy</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3>Contact Us</h3>
+        <div class="contact-info">
+          <i class="fas fa-map-marker-alt"></i>
+          <p>123 Luxury Ave, Paradise City</p>
+        </div>
+        <div class="contact-info">
+          <i class="fas fa-phone-alt"></i>
+          <p>+123 456 7890</p>
+        </div>
+        <div class="contact-info">
+          <i class="fas fa-envelope"></i>
+          <p>info@luxuryhotels.com</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2025 Luxury Hotels. All Rights Reserved.</p>
+    </div>
+  </footer>
 
-            // Fetch available rooms for dropdown
-            const loadAvailableRooms = (typeId = null) => {
-                fetch('/api/rooms/available')
-                    .then(response => response.json())
-                    .then(data => {
-                        const roomNumberSelect = document.getElementById('roomNumber');
-                        // Clear existing options except the first one
-                        while (roomNumberSelect.options.length > 1) {
-                            roomNumberSelect.remove(1);
-                        }
-                        
-                        // Filter rooms by type_id if specified
-                        const filteredRooms = typeId ? data.filter(room => room.type_id == typeId) : data;
-                        
-                        if (filteredRooms.length === 0) {
-                            const option = document.createElement('option');
-                            option.disabled = true;
-                            option.textContent = 'No available rooms of this type';
-                            roomNumberSelect.appendChild(option);
-                        } else {
-                            filteredRooms.forEach(room => {
-                                const option = document.createElement('option');
-                                option.value = room.room_id;
-                                
-                                // Create a more descriptive room display
-                                let roomDisplay = `Room ${room.room_number}`;
-                                
-                                // Add floor information if available
-                                if (room.floor) {
-                                    roomDisplay += ` (Floor ${room.floor})`;  
-                                }
-                                
-                                // Add status information
-                                roomDisplay += ` - ${room.status}`;
-                                
-                                option.textContent = roomDisplay;
-                                option.dataset.typeId = room.type_id;
-                                roomNumberSelect.appendChild(option);
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching available rooms:', error);
-                        showStatusMessage('Error loading available rooms. Please try again.', true);
-                    });
-            };
-            
-            // Initial load of all available rooms
-            loadAvailableRooms();
-
-            // Filter rooms based on selected room type
-            document.getElementById('roomType').addEventListener('change', function() {
-                const selectedTypeId = this.value;
-                if (selectedTypeId) {
-                    loadAvailableRooms(selectedTypeId);
-                } else {
-                    loadAvailableRooms();
-                }
-            });
-            
-            // Set min date for check-in and check-out to today
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('checkIn').min = today;
-            document.getElementById('checkOut').min = today;
-            
-            // Update check-out min date when check-in changes
-            document.getElementById('checkIn').addEventListener('change', function() {
-                document.getElementById('checkOut').min = this.value;
-                if (document.getElementById('checkOut').value < this.value) {
-                    document.getElementById('checkOut').value = this.value;
-                }
-            });
-
-            // Set default payment date to today
-            document.getElementById('paymentDate').value = today;
-
-            // Fetch services for checkboxes
-            fetch('/api/services')
-                .then(response => response.json())
-                .then(data => {
-                    const servicesContainer = document.getElementById('servicesContainer');
-                    data.forEach(service => {
-                        const serviceDiv = document.createElement('div');
-                        serviceDiv.className = 'mb-3';
-                        serviceDiv.innerHTML = `
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="service${service.service_id}" name="services" value="${service.service_id}">
-                                <label class="form-check-label" for="service${service.service_id}">
-                                    ${service.service_name} - $${service.price}
-                                </label>
-                            </div>
-                            <div class="ms-4 mt-1 d-none" id="quantityDiv${service.service_id}">
-                                <label for="quantity${service.service_id}" class="form-label">Quantity:</label>
-                                <input type="number" class="form-control form-control-sm" id="quantity${service.service_id}" name="quantity${service.service_id}" value="1" min="1" style="width: 80px">
-                            </div>
-                        `;
-                        servicesContainer.appendChild(serviceDiv);
-                        
-                        // Show/hide quantity input based on checkbox
-                        document.getElementById(`service${service.service_id}`).addEventListener('change', function() {
-                            const quantityDiv = document.getElementById(`quantityDiv${service.service_id}`);
-                            if (this.checked) {
-                                quantityDiv.classList.remove('d-none');
-                            } else {
-                                quantityDiv.classList.add('d-none');
-                            }
-                        });
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching services:', error);
-                    showStatusMessage('Error loading available services. Some features may be limited.', true);
-                });
-
-            // Form submission
-            document.getElementById('bookingForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                // Clear previous status messages
-                document.getElementById('statusMessage').style.display = 'none';
-                
-                try {
-                    // Show a loading indicator
-                    const submitBtn = this.querySelector('button[type="submit"]');
-                    const originalBtnText = submitBtn.textContent;
-                    submitBtn.textContent = 'Processing...';
-                    submitBtn.disabled = true;
-                    
-                    // 1. Create user
-                    console.log('Creating user...');
-                    showStatusMessage('Creating user account...', false);
-                    const userResponse = await fetch('/api/users', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            username: document.getElementById('username').value,
-                            email: document.getElementById('email').value,
-                            phone: document.getElementById('phone').value,
-                            password: document.getElementById('password').value
-                        })
-                    });
-                    
-                    if (!userResponse.ok) {
-                        const errorData = await userResponse.json();
-                        throw new Error(`Failed to create user: ${errorData.error || errorData.details || userResponse.statusText}`);
-                    }
-                    const userData = await userResponse.json();
-                    console.log('User created:', userData);
-                    // 2. Create guest
-                    console.log('Creating guest...');
-                    showStatusMessage('Creating guest information...', false);
-                    const guestResponse = await fetch('/api/guests', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            full_name: document.getElementById('fullName').value,
-                            phone: document.getElementById('guestPhone').value,
-                            email: document.getElementById('guestEmail').value,
-                            address: document.getElementById('address').value
-                        })
-                    });
-                    
-                    if (!guestResponse.ok) {
-                        const errorData = await guestResponse.json();
-                        throw new Error(`Failed to create guest: ${errorData.error || errorData.details || guestResponse.statusText}`);
-                    }
-                    const guestData = await guestResponse.json();
-                    console.log('Guest created:', guestData);
-                    
-                    // 3. Create booking
-                    console.log('Creating booking...');
-                    showStatusMessage('Creating booking...', false);
-                    const bookingResponse = await fetch('/api/bookings', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            guest_id: guestData.id,
-                            room_id: document.getElementById('roomNumber').value,
-                            check_in: document.getElementById('checkIn').value,
-                            check_out: document.getElementById('checkOut').value,
-                            status: document.getElementById('bookingStatus').value
-                        })
-                    });
-                    
-                    if (!bookingResponse.ok) {
-                        const errorData = await bookingResponse.json();
-                        throw new Error(`Booked successfully `);
-                        // ${errorData.error || errorData.details || bookingResponse.statusText}`);
-                    }
-                    const bookingData = await bookingResponse.json();
-                    console.log('Booking created:', bookingData);
-                    
-                    // 4. Create payment
-                    console.log('Processing payment...');
-                    showStatusMessage('Processing payment...', false);
-                    const paymentResponse = await fetch('/api/payments', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            booking_id: bookingData.id,
-                            amount: document.getElementById('amount').value,
-                            payment_date: document.getElementById('paymentDate').value,
-                            payment_method: document.getElementById('paymentMethod').value
-                        })
-                    });
-                    
-                    if (!paymentResponse.ok) {
-                        const errorData = await paymentResponse.json();
-                        throw new Error(`Failed to process payment: ${errorData.error || errorData.details || paymentResponse.statusText}`);
-                    }
-                    const paymentData = await paymentResponse.json();
-                    console.log('Payment processed:', paymentData);
-                    
-                    // 5. Add selected services to booking
-                    console.log('Adding selected services...');
-                    const serviceCheckboxes = document.querySelectorAll('input[name="services"]:checked');
-                    
-                    if (serviceCheckboxes.length > 0) {
-                        showStatusMessage('Adding selected services...', false);
-                        
-                        for (const serviceCheckbox of serviceCheckboxes) {
-                            const serviceId = serviceCheckbox.value;
-                            const quantity = document.getElementById(`quantity${serviceId}`).value;
-                            
-                            const serviceResponse = await fetch('/api/booking-services', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    booking_id: bookingData.id,
-                                    service_id: serviceId,
-                                    quantity: quantity
-                                })
-                            });
-                            
-                            if (!serviceResponse.ok) {
-                                console.warn(`Failed to add service ${serviceId}, continuing with other services`);
-                            }
-                        }
-                    }
-                    
-                    // Final success message
-                    showStatusMessage('Booking completed successfully! Confirmation number: ' + bookingData.id, false);
-                    
-                    // Reset form
-                    document.getElementById('bookingForm').reset();
-                    
-                    // Reset room numbers dropdown
-                    const roomNumberSelect = document.getElementById('roomNumber');
-                    while (roomNumberSelect.options.length > 1) {
-                        roomNumberSelect.remove(1);
-                    }
-                    
-                    // Reload available rooms
-                    loadAvailableRooms();
-                    
-                } catch (error) {
-                    console.error('Error processing booking:', error);
-                    showStatusMessage(`Error: ${error.message}`, true);
-                } finally {
-                    // Re-enable submit button
-                    const submitBtn = document.querySelector('button[type="submit"]');
-                    submitBtn.textContent = 'Submit Booking';
-                    submitBtn.disabled = false;
-                }
-            });
-            
-            // Add validation for dates
-            document.getElementById('checkIn').addEventListener('change', function() {
-                validateDates();
-            });
-            
-            document.getElementById('checkOut').addEventListener('change', function() {
-                validateDates();
-            });
-            
-            function validateDates() {
-                const checkIn = document.getElementById('checkIn').value;
-                const checkOut = document.getElementById('checkOut').value;
-                
-                if (checkIn && checkOut && checkOut < checkIn) {
-                    showStatusMessage('Check-out date cannot be before check-in date', true);
-                    document.getElementById('checkOut').value = checkIn;
-                }
-            }
-            
-            // Add validation for amount and payment date
-            document.getElementById('amount').addEventListener('change', function() {
-                if (this.value <= 0) {
-                    showStatusMessage('Amount must be greater than zero', true);
-                    this.value = '';
-                }
-            });
-            
-            // Room type change should update amount field with base price
-            document.getElementById('roomType').addEventListener('change', function() {
-                const selectedOption = this.options[this.selectedIndex];
-                if (selectedOption && selectedOption.textContent) {
-                    // Extract price from option text (format: "Room Type - $XXX per night")
-                    const priceMatch = selectedOption.textContent.match(/\$(\d+(\.\d+)?)/);
-                    if (priceMatch && priceMatch[1]) {
-                        // Calculate default price for 1 night
-                        const basePrice = parseFloat(priceMatch[1]);
-                        document.getElementById('amount').value = basePrice;
-                    }
-                }
-            });
-            
-            // Update amount when dates change to calculate total stay cost
-            function updateAmount() {
-                const checkIn = document.getElementById('checkIn').value;
-                const checkOut = document.getElementById('checkOut').value;
-                const roomTypeSelect = document.getElementById('roomType');
-                
-                if (checkIn && checkOut && roomTypeSelect.value) {
-                    const selectedOption = roomTypeSelect.options[roomTypeSelect.selectedIndex];
-                    const priceMatch = selectedOption.textContent.match(/\$(\d+(\.\d+)?)/);
-                    
-                    if (priceMatch && priceMatch[1]) {
-                        const pricePerNight = parseFloat(priceMatch[1]);
-                        
-                        // Calculate nights
-                        const checkInDate = new Date(checkIn);
-                        const checkOutDate = new Date(checkOut);
-                        const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
-                        
-                        if (nights > 0) {
-                            document.getElementById('amount').value = (pricePerNight * nights).toFixed(2);
-                        }
-                    }
-                }
-            }
-            
-            // Update amount when dates or room type changes
-            document.getElementById('checkIn').addEventListener('change', updateAmount);
-            document.getElementById('checkOut').addEventListener('change', updateAmount);
-            document.getElementById('roomType').addEventListener('change', updateAmount);
-        });
-    </script>
+  <!-- Swiper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.4.1/swiper-bundle.min.js"></script>
+  
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper("#js-swiper-hotels", {
+      slidesPerView: 2,
+      spaceBetween: 20,
+      centeredSlides: true,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+    });
+  </script>
 </body>
 </html>
